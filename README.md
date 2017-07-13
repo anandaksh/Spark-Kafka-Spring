@@ -7,5 +7,5 @@ Steps to run:
 5. Run SparkKafkaProducerApplication.java
 6. Run SparkKafkaStreamReaderApplication.java
 7. Run SparkDataConsumerApplication.java
-8.Hit http://localhost:8080/records in browser
-9.Hit http://localhost:8091/result
+8. Hit http://localhost:8080/records in browser
+9. Hit http://localhost:8091/result
