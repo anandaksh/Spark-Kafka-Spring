@@ -1,0 +1,23 @@
+server.port=8095
+server.error.whitelabel.enabled=false
+spark.sql.warehouse.dir=file:///C:/EclipseWorkSpaces/SparkETLProcessorResult/
+hdfs.folder.location=file:///C:/EclipseWorkSpaces/KafkaSparkStreamingOutput/*
+#spark.master.endpoint=spark://10.156.207.26:7077
+spark.master.endpoint=local
+cassandra.contact.endpoints=localhost
+cassandra.keyspace=product
+cassandra.table.name=product
+
+spark.settings=spark.executor.memory=1g,\
+  spark.io.compression.codec=org.apache.spark.io.LZ4CompressionCodec,\
+  spark.cassandra.input.split.size_in_mb=67108864,\
+  spark.cassandra.read.timeout_ms=1200000,\
+  spark.cassandra.connection.timeout_ms=1200000
+
+##Logging properties
+logging.level.org.apache.spark: WARN
+logging.level.kafka.utils.VerifiableProperties: WARN
+logging.level.o.a.h.m.lib.output: WARN
+logging.level.o.a.h.conf.Configuration: WARN
+logging.level.o.s.jetty.server: WARN
+logging.level.o.a.tomcat.util.scan: ERROR

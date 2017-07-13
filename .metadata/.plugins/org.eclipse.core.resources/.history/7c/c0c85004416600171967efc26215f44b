@@ -1,0 +1,55 @@
+package com.example.model;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "resultstats")
+public class Result{
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE)
+	@Column(name = "productbrand")
+	private String productbrand;
+	@Column(name = "productname")
+	private String productname;
+	@Column(name = "numberoforders")
+	private Integer numberoforders;
+
+	public Result(String productbrand, String productname, Integer numberoforders) {
+		super();
+		this.productbrand = productbrand;
+		this.productname = productname;
+		this.numberoforders = numberoforders;
+	}
+
+	public String getProductbrand() {
+		return productbrand;
+	}
+
+	public void setProductbrand(String productbrand) {
+		this.productbrand = productbrand;
+	}
+
+	public String getProductname() {
+		return productname;
+	}
+
+	public void setProductname(String productname) {
+		this.productname = productname;
+	}
+
+	public Integer getNumberoforders() {
+		return numberoforders;
+	}
+
+	public void setNumberoforders(Integer numberoforders) {
+		this.numberoforders = numberoforders;
+	}
+
+}

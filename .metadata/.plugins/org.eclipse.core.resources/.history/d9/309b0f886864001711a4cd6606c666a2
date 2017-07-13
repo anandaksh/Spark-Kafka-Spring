@@ -1,0 +1,63 @@
+package com.example.model;
+
+import java.io.Serializable;
+
+
+public class GroupByFields implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	private String productbrand;
+	private String productname;
+	
+	public GroupByFields(String productbrand, String productname) {
+		super();
+		this.productbrand = productbrand;
+		this.productname = productname;
+	}
+
+	public String getProductbrand() {
+		return productbrand;
+	}
+
+	public void setProductbrand(String productbrand) {
+		this.productbrand = productbrand;
+	}
+
+	public String getProductname() {
+		return productname;
+	}
+
+	public void setProductname(String productname) {
+		this.productname = productname;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((productbrand == null) ? 0 : productbrand.hashCode());
+		result = prime * result + ((productname == null) ? 0 : productname.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GroupByFields other = (GroupByFields) obj;
+		if (productbrand == null) {
+			if (other.productbrand != null)
+				return false;
+		} else if (!productbrand.equals(other.productbrand))
+			return false;
+		if (productname == null) {
+			if (other.productname != null)
+				return false;
+		} else if (!productname.equals(other.productname))
+			return false;
+		return true;
+	}	

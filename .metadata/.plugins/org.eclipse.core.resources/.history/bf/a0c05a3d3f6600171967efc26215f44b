@@ -1,0 +1,10 @@
+package com.example.repository;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.example.model.Result;
+
+
+public interface ResultJdbcRepository extends CrudRepository<Result, Integer> {
+	public Result findByProductbrandAndProductname(String pbran, String pname);
+}

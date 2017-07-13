@@ -1,0 +1,22 @@
+package com.example.repository;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.example.model.Result;
+import com.ibm.insite.kafkaetlprocessor.dataobject.ResultStats;
+
+public class ResultRepository extends CrudRepository<Result, Integer>{
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+
+	public List<ResultStats> findAll() {
+		List<ResultStats> result = jdbcTemplate.query("SELECT * FROM ResultStats",
+				(rs, rowNum) -> new ResultStats(rs.getString("productbrand"), rs.getString("productname"), rs.getInt("numberoforders")));
+		return result;
+	}
+
+}

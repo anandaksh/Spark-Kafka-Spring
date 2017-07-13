@@ -1,0 +1,76 @@
+package com.example;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.spark.SparkContext;
+import org.apache.spark.api.java.JavaPairRDD;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+
+import com.google.gson.Gson;
+import com.ibm.insite.kafkaetlprocessor.GroupByFields;
+import com.ibm.insite.kafkaetlprocessor.dataobject.KafkaInputOrderMessage;
+import com.ibm.insite.kafkaetlprocessor.dataobject.ResultStats;
+
+import scala.Tuple2;
+
+public class SparkDataConsumerRunner implements CommandLineRunner{
+	@Autowired
+	SparkContext sparkContext;
+
+	@Override
+	public void run(String... arg0) throws Exception {
+		JavaSparkContext sc = new JavaSparkContext(conf);
+
+		/**
+		 * For POC purpose, I am running this method every minute. In production environment, this will vary.
+		 */
+		while (true) {
+			//Extract (E) the data from HDFS
+			JavaRDD<String> data = sc.textFile(HDFS_FOLDER_LOCATION);
+
+			//START: Transform (T) the database read from HDFS
+			JavaRDD<KafkaInputOrderMessage> resultRecords = data.map(line -> {
+				Gson objGson = new Gson();
+				KafkaInputOrderMessage rd = objGson.fromJson(line, KafkaInputOrderMessage.class);
+				return rd;
+			});
+
+			JavaPairRDD<GroupByFields, Integer> rddBrandCount = resultRecords
+					.mapToPair(e -> new Tuple2<GroupByFields, Integer>(new GroupByFields(e.getProductbrand(), e.getProductname()), 1));
+
+			JavaPairRDD<GroupByFields, Integer> rddGroupByKeyResult = rddBrandCount.reduceByKey((a, b) -> a + b);
+			Map<GroupByFields, Integer> resultMap = rddGroupByKeyResult.collectAsMap();
+			//END: Transform (T) the database read from HDFS
+
+			Iterator<Entry<GroupByFields, Integer>> it = resultMap.entrySet().iterator();
+			
+			//START: Load (L) the transformed data into destination.
+			//Here I am saving the transformed result into H2 database. This H2 database is queried by the controller.
+			while (it.hasNext()) {
+				Entry<GroupByFields, Integer> pair = it.next();
+				GroupByFields key = (GroupByFields) pair.getKey();
+				Integer value = Integer.parseInt(pair.getValue().toString());
+
+				ResultStats rs = respository.findByProductbrandAndProductname(key.getProductbrand(), key.getProductname());
+				if (rs != null) {
+					rs.setNumberoforders(value);
+				}
+				else {
+					rs = new ResultStats(key.getProductbrand(), key.getProductname(), value);
+				}
+				respository.save(rs);
+			}
+			//END: Load (L) the transformed data into destination.
+			
+			Thread.sleep(1000 * 60);
+		}
+	}
+		
+	}
+
+}

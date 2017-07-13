@@ -1,0 +1,21 @@
+package com.example.app;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
+
+import com.ibm.insite.kafkasender.KafkaSparkSenderApplication;
+
+@SpringBootApplication
+public class SparkKafkaProducerApplication extends SpringBootServletInitializer implements CommandLineRunner {
+
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(SparkKafkaProducerApplication.class);
+	}
+	public static void main(String[] args) {
+		SpringApplication.run(SparkKafkaProducerApplication.class, args);
+	}
+}

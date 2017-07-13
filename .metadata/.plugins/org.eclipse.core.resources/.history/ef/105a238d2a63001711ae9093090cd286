@@ -1,0 +1,29 @@
+package com.example.util;
+
+import java.text.SimpleDateFormat;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+
+public class KafkaReader implements CommandLineRunner{
+	@Value("${kafka.bootstrap-servers}")
+	private String bootstrapServers;
+
+	@Value("${topic.name.ibm.adopt}")
+	private String ibmAdoptTopic;
+
+	@Value("${hdfs.folder.location}")
+	private String OUTPUT_FILE_BASE_LOCATION;
+
+	@Value("${output.filename.prefix}")
+	private String OUTPUT_FILENAME_PREFIX;
+	
+	private final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyyMMddHHmm");
+
+	@Override
+	public void run(String... arg0) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

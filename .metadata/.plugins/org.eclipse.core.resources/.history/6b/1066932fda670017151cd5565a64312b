@@ -1,0 +1,102 @@
+package com.example.config;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cassandra.config.DataCenterReplication;
+import org.springframework.cassandra.core.keyspace.CreateKeyspaceSpecification;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.data.cassandra.config.CassandraClusterFactoryBean;
+import org.springframework.data.cassandra.config.CassandraEntityClassScanner;
+import org.springframework.data.cassandra.config.SchemaAction;
+import org.springframework.data.cassandra.config.java.AbstractCassandraConfiguration;
+import org.springframework.data.cassandra.convert.CassandraConverter;
+import org.springframework.data.cassandra.convert.MappingCassandraConverter;
+import org.springframework.data.cassandra.core.CassandraOperations;
+import org.springframework.data.cassandra.core.CassandraTemplate;
+import org.springframework.data.cassandra.mapping.BasicCassandraMappingContext;
+import org.springframework.data.cassandra.mapping.CassandraMappingContext;
+
+import com.datastax.driver.core.PlainTextAuthProvider;
+
+@Configuration
+public class CassandraConfig extends AbstractCassandraConfiguration {
+
+	@Autowired
+	private Environment environment;
+
+	@Bean
+	public CassandraClusterFactoryBean cluster() {
+		CassandraClusterFactoryBean cluster = new CassandraClusterFactoryBean();
+		cluster.setKeyspaceCreations(getKeyspaceCreations());
+		cluster.setContactPoints(environment.getProperty("cassandra.contactpoints"));
+		cluster.setPort(Integer.parseInt(environment.getProperty("cassandra.port")));
+		cluster.setAuthProvider(authProvider());
+
+		return cluster;
+	}
+
+	@Override
+	protected String getKeyspaceName() {
+		return environment.getProperty("cassandra.keyspace-name");
+	}
+
+	@Bean
+	public CassandraMappingContext cassandraMapping() throws ClassNotFoundException {
+		return new BasicCassandraMappingContext();
+	}
+
+	@Override
+	public SchemaAction getSchemaAction() {
+		return SchemaAction.CREATE_IF_NOT_EXISTS;
+	}
+
+	@Override
+	public String[] getEntityBasePackages() {
+		return new String[] { "com.vmware.vcf.dashboard.model" };
+	}
+
+	@Bean
+	public CassandraOperations cassandraOperations() throws Exception {
+		return new CassandraTemplate(session().getObject());
+	}
+
+	// username/password
+	@Bean
+	public PlainTextAuthProvider authProvider()
+
+	{
+		return new PlainTextAuthProvider("cassandra", "cassandra");
+	}
+
+	protected List<CreateKeyspaceSpecification> getKeyspaceCreations() {
+		List<CreateKeyspaceSpecification> createKeyspaceSpecifications = new ArrayList<>();
+		createKeyspaceSpecifications.add(getKeySpaceSpecification());
+		return createKeyspaceSpecifications;
+	}
+
+	// Below method creates "keyspace" if it doesnt exist.
+	private CreateKeyspaceSpecification getKeySpaceSpecification() {
+		CreateKeyspaceSpecification batdbKeySpace = new CreateKeyspaceSpecification();
+		DataCenterReplication dcr = new DataCenterReplication("dc1", 3L);
+		batdbKeySpace.name(getKeyspaceName());
+		batdbKeySpace.ifNotExists(true).createKeyspace().withNetworkReplication(dcr);
+		return batdbKeySpace;
+	}
+
+	@Bean
+	public CassandraMappingContext mappingContext() throws Exception {
+		BasicCassandraMappingContext bean = new BasicCassandraMappingContext();
+		bean.setInitialEntitySet(CassandraEntityClassScanner.scan(this.getEntityBasePackages()));
+		return bean;
+	}
+
+	@Bean
+	public CassandraConverter converter() throws Exception {
+		return new MappingCassandraConverter(mappingContext());
+	}
+
+}

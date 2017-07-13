@@ -1,0 +1,43 @@
+package com.example.model;
+
+import java.io.Serializable;
+
+import com.datastax.spark.connector.japi.CassandraRow;
+
+public class Result implements Serializable {
+	private String productbrand;
+	private String productname;
+	private Integer numberoforders;
+
+	public Result(String productbrand, String productname, Integer numberoforders) {
+		super();
+		this.productbrand = productbrand;
+		this.productname = productname;
+		this.numberoforders = numberoforders;
+	}
+
+	public String getProductbrand() {
+		return productbrand;
+	}
+
+	public void setProductbrand(String productbrand) {
+		this.productbrand = productbrand;
+	}
+
+	public String getProductname() {
+		return productname;
+	}
+
+	public void setProductname(String productname) {
+		this.productname = productname;
+	}
+
+	public Integer getNumberoforders() {
+		return numberoforders;
+	}
+
+	public void setNumberoforders(Integer numberoforders) {
+		this.numberoforders = numberoforders;
+	}
+
+}

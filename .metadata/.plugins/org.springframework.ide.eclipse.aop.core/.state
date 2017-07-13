@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aop-reference-model>
+<aop-project name="KafkaSparkStreamingReader"/>
+<aop-project name="KafkaSparkSender"/>
+<aop-project name="SparkKafkaDataConsumer"/>
+<aop-project name="SparkKafkaProducer"/>
+<aop-project name="SparkKafkaStreamReader"/>
+<aop-project name="SparkDataProcessor"/>
+</aop-reference-model>

@@ -1,0 +1,83 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Product Order</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+	<script>
+		document.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" />');
+	</script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+	<nav class="navbar navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#" style="color: white">Registration Details</a>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+
+		<div class="starter-template">
+			<h2>Registration Form</h2><br>
+
+			<div id="feedback"></div><br>
+
+			<form class="form-horizontal" id="registration-form" action="#">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Student Name</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="studentname" name="studentname" maxlength="60" required="required"/>
+					</div>
+					<div class='clearfix'></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Mobile Number</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="mobnumber" name="mobnumber" maxlength="11"  required="required"/>
+					</div>
+					<div class='clearfix'></div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Email Id</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="emailid" name="emailid" maxlength="20" required="required"/>
+					</div>
+					<div class='clearfix'></div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Location</label>
+					<div class="col-sm-4">
+						<select class="form-control" id="location" name="location">
+							<option value="Bangalore">Bangalore</option>
+							<option value="Mangalore">Mangalore</option>
+							<option value="Mysore">Mysore</option>
+							<option value="Uduppi">Uduppi</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-2">
+						<button type="submit" id="btn-order"
+							class="btn btn-primary btn-lg btn-block">Submit</button>
+					</div>
+				</div>
+			</form>
+
+		</div>
+
+	</div>
+	<script>
+		document.write('<script src="${contextPath}/js/main.js?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');
+	</script>
+
+</body>
+</html>

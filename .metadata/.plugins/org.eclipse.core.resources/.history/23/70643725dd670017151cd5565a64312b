@@ -1,0 +1,71 @@
+package com.example.model;
+
+import org.springframework.cassandra.core.PrimaryKeyType;
+import org.springframework.data.cassandra.mapping.CassandraType;
+import org.springframework.data.cassandra.mapping.Column;
+import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
+import org.springframework.data.cassandra.mapping.Table;
+import com.datastax.driver.core.DataType;
+
+@Table("result")
+public class ResultData {
+	@Column
+	@CassandraType(type = DataType.Name.INT)
+	private Integer id;
+
+	@Column
+	@CassandraType(type = DataType.Name.TEXT)
+	private String branch;
+
+	@Column
+	@CassandraType(type = DataType.Name.TEXT)
+	private String location;
+
+	@Column
+	@CassandraType(type = DataType.Name.TEXT)
+	private Integer numberofbranch;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getBranch() {
+		return branch;
+	}
+
+	public void setBranch(String branch) {
+		this.branch = branch;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public Integer getNumberofbranch() {
+		return numberofbranch;
+	}
+
+	public void setNumberofbranch(Integer numberofbranch) {
+		this.numberofbranch = numberofbranch;
+	}
+
+	public ResultData(String branch, String location, Integer numberofbranch) {
+		super();
+		this.branch = branch;
+		this.location = location;
+		this.numberofbranch = numberofbranch;
+	}
+    
+	public ResultData()
+	{
+		
+	}
+}
